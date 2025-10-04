@@ -1,0 +1,134 @@
+version: 2
+
+sources:
+  - name: healthcare
+    database: HEALTHCARE_DB
+    schema: STAGE
+    tables:
+      - name: stg_campaign_email
+        description: "Email campaign activity (sent, opened, clicked)"
+        columns:
+          - name: email_id
+            description: "Unique identifier for email record"
+          - name: campaign_id
+            description: "Campaign associated with this email"
+          - name: hcp_id
+            description: "Healthcare professional receiving the email"
+          - name: send_date
+            description: "Date email was sent"
+          - name: status
+            description: "Status of the email (sent, opened, clicked)"
+          - name: drug_id
+            description: "Drug promoted in the campaign"
+
+      - name: stg_campaign_phone
+        description: "Phone call campaign activity"
+        columns:
+          - name: call_id
+            description: "Unique identifier for phone call record"
+          - name: campaign_id
+          - name: hcp_id
+          - name: call_date
+            description: "Date of phone call"
+          - name: status
+            description: "Call status (connect, busy, no-answer)"
+          - name: duration_sec
+            description: "Duration of the call in seconds"
+          - name: drug_id
+
+      - name: stg_campaign_event
+        description: "Event campaign activity"
+        columns:
+          - name: event_id
+            description: "Unique identifier for event record"
+          - name: campaign_id
+          - name: hcp_id
+          - name: event_date
+            description: "Date of the event"
+          - name: status
+            description: "Event status (invited, attended)"
+          - name: drug_id
+
+      - name: stg_campaign
+        description: "Campaign metadata"
+        columns:
+          - name: campaign_id
+            description: "Unique identifier for campaign"
+          - name: drug_id
+          - name: channel_code
+          - name: start_date
+          - name: end_date
+
+      - name: stg_hcp
+        description: "Healthcare professional master data"
+        columns:
+          - name: hcp_id
+            description: "Unique identifier for HCP"
+          - name: hcp_name
+          - name: specialty_code
+          - name: hospital_id
+          - name: region_code
+
+      - name: stg_hospital
+        description: "Hospital master data"
+        columns:
+          - name: hospital_id
+          - name: hospital_name
+          - name: region_code
+
+      - name: stg_rep
+        description: "Sales representative master data"
+        columns:
+          - name: rep_id
+          - name: rep_name
+          - name: region_code
+
+      - name: stg_drug
+        description: "Drug master data"
+        columns:
+          - name: drug_id
+          - name: drug_name
+          - name: therapeutic_area_code
+          - name: product_line_code
+
+      - name: stg_region
+        description: "Region lookup table"
+        columns:
+          - name: region_code
+          - name: region_name
+
+      - name: stg_specialty
+        description: "Specialty lookup table"
+        columns:
+          - name: specialty_code
+          - name: specialty_name
+
+      - name: stg_therapeutic_area
+        description: "Therapeutic area lookup"
+        columns:
+          - name: therapeutic_area_code
+          - name: therapeutic_area_name
+
+      - name: stg_product_line
+        description: "Product line lookup"
+        columns:
+          - name: product_line_code
+          - name: product_line_name
+
+      - name: stg_channel_codes
+        description: "Channel codes lookup"
+        columns:
+          - name: channel_code
+          - name: channel_name
+
+      - name: fact_engagement
+        description: "Fact table capturing HCP engagement across campaigns"
+        columns:
+          - name: engagement_id
+          - name: campaign_id
+          - name: drug_id
+          - name: hcp_id
+          - name: channel
+          - name: interaction_date
+          - name: status
+          - name: duration_minutes
