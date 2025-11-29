@@ -1,6 +1,9 @@
-{{ config(
-    materialized = 'view'
-) }}
+{{ 
+    config(
+        materialized = 'table',
+        pre_hook = "TRUNCATE TABLE IF EXISTS {{ this }}"
+    ) 
+}}
 
 with phone as (
     select
@@ -16,7 +19,8 @@ with phone as (
         0 as clicked_flag,
         case when phone.status = 'Connected' then 1 else 0 end as connected_flag,
         0 as attended_flag,
-        try_cast(duration_sec as number) as call_duration_sec
+        try_cast(duration_sec as number) as call_duration_sec,
+    to_timestamp(ingested_at) as ingested_at
     from {{ source('healthcare', 'stg_campaign_phone') }} phone
 )
 

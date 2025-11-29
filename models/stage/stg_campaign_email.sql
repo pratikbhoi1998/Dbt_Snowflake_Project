@@ -1,6 +1,9 @@
-{{ config(
-    materialized = 'view'
-) }}
+{{ 
+    config(
+        materialized = 'table',
+        pre_hook = "TRUNCATE TABLE IF EXISTS {{ this }}"
+    ) 
+}}
 
 with email as (
     select
@@ -16,7 +19,8 @@ with email as (
         case when email.status = 'Clicked' then 1 else 0 end as clicked_flag,
         0 as connected_flag,
         0 as attended_flag,
-        null::number as call_duration_sec
+        null::number as call_duration_sec,
+    to_timestamp(ingested_at) as ingested_at
     from {{ source('healthcare', 'stg_campaign_email') }} email
 )
 
